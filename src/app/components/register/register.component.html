@@ -1,29 +1,65 @@
-<div class="row">
-    <form class="col s12">
-        <div class="row">
-            <div class="input-field col s6">
-                <input id="username" type="text" class="validate">
-                <label for="Username">Username</label>
+<ul *ngFor="let user of users">
+    <li>
+        {{ user[0].username }}
+    </li>
+</ul>
+
+<mat-horizontal-stepper [linear]="isLinear" #stepper>
+    <mat-step [stepControl]="firstFormGroup">
+        <form [formGroup]="firstFormGroup">
+            <ng-template matStepLabel>Fill out your email</ng-template>
+            <mat-form-field>
+                <input matInput placeholder="Email" formControlName="firstCtrl" [formControl]="emailFormControl" required>
+                <mat-error *ngIf="emailFormControl.invalid">{{getEmailErrorMessage()}}</mat-error>
+            </mat-form-field>
+            <div>
+                <button mat-stroked-button matStepperNext (click)="onNext()" >Next</button>
             </div>
-        </div>
-        <div class="row">
-                <div class="input-field col s12">
-                    <input id="email" type="email" class="validate">
-                    <label for="email">Email</label>
-                </div>
-        </div>
-        <div class="row">
-            <div class="input-field col s12">
-                <input id="password" type="password" class="validate">
-                <label for="password">Password</label>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup">
+        <form [formGroup]="secondFormGroup">
+            <ng-template matStepLabel>Pick a Username</ng-template>
+            <mat-form-field>
+                <input matInput placeholder="Username" formControlName="secondCtrl" [formControl]="usernameFormControl" required>
+                <mat-error *ngIf="usernameFormControl.invalid">{{getUsernameErrorMessage()}}</mat-error>
+
+            </mat-form-field>
+            <div>
+                <button mat-stroked-button matStepperPrevious>Back</button>
+                <button mat-stroked-button matStepperNext (click)="onNext()">Next</button>
             </div>
-        </div>
-        <div class="row">
-            <div class="input-field col s12">
-                <input id="passwordConfirmation" type="password" class="validate">
-                <label for="passwordConfirmation">Password Confirmation</label>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="thirdFormGroup">
+        <form [formGroup]="thirdFormGroup">
+            <ng-template matStepLabel>Pick a strong password</ng-template>
+            <mat-form-field>
+                <input matInput placeholder="Password" formControlName="thirdCtrl" [formControl]="passwordFormControl" [type]="!hide ? 'password' : 'text'" required>
+                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+                <mat-error *ngIf="passwordFormControl.invalid">{{getPasswordErrorMessage()}}</mat-error>
+            </mat-form-field>
+            <div>
+                <button mat-stroked-button matStepperPrevious>Back</button>
+                <button mat-stroked-button matStepperNext (click)="onNext()" >Next</button>
             </div>
-        </div>
-    </form>
-</div>
-                
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="fourthFormGroup">
+        <form [formGroup]="fourthFormGroup">
+            <ng-template matStepLabel>Make sure it's correct</ng-template>
+            <mat-form-field>
+                <input matInput placeholder="Password" formControlName="fourthCtrl" [type]="!hide ? 'password' : 'text'" required>
+                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+            </mat-form-field>
+            <div>
+                <button mat-stroked-button matStepperPrevious>Back</button>
+                <button mat-stroked-button matStepperNext (click)="register()">Finish</button>
+            </div>
+        </form>
+    </mat-step>
+</mat-horizontal-stepper>
