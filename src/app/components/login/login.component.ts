@@ -62,11 +62,11 @@ export class LoginComponent implements OnInit {
       if(this.dataRegister.success){
         console.log(this.dataRegister);
         this.loginService.storeUserData(this.dataRegister.token, this.dataRegister.user);
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/friendslist']);
       }else{
         console.log(this.dataRegister.message);
       }
-    })
+    });
   }
 
 }

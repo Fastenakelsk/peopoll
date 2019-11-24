@@ -1,1 +1,31 @@
-<p>friends-list works!</p>
+<!-- Requests list -->
+<div class="container">
+    <mat-card>
+        <mat-card-title>Friend Requests</mat-card-title>
+        <mat-list *ngIf="requests === undefined">
+            <mat-list-item>
+                    <h4>No friend requests</h4>
+            </mat-list-item>
+        </mat-list>
+        <mat-list *ngFor="let request of requests">
+            <mat-list-item>
+                {{ request.sender }}
+                <div class="rightAlign"></div>
+                <button mat-stroked-button (click)="onAccept(request)">Accept</button>
+                <button mat-stroked-button class="marginLeft" (click)="onDecline(request)">Decline</button>
+            </mat-list-item>
+            
+            <mat-divider></mat-divider>
+        </mat-list>
+    </mat-card>
+</div>
+
+<!-- Add a new friend -->
+<div class="container">
+    <form class="example-form">
+        <mat-form-field class="example-full-width">
+            <input matInput placeholder="Add a new friend" name="username" [(ngModel)]="username" value="Username">
+        </mat-form-field>
+        <button class="marginLeft" mat-stroked-button (click)="onRequest()">Add</button>
+    </form>
+</div>

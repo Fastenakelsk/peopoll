@@ -1,1 +1,28 @@
-<p>poll works!</p>
+<!-- Add a new poll -->
+<div class="container">
+    <form class="poll-form">
+        <mat-form-field class="example-full-width">
+            <input matInput placeholder="Poll name" name="pollName" [(ngModel)]="pollName" value="pollName">
+        </mat-form-field>
+    </form>
+</div>
+
+<!-- Add a poll Item -->
+<div class="container">
+    <form class="pollItem-form">
+        <mat-form-field class="example-full-width">
+            <input matInput placeholder="Poll item name" name="pollItemName" [(ngModel)]="pollItemName" value="pollItemName">
+        </mat-form-field>
+        <button class="marginLeft" mat-stroked-button (click)="onAddPollItem()">Add Poll Item</button>
+    </form>
+</div>
+
+<!-- Choose which friends to invite -->
+<mat-form-field>
+    <mat-label>Friends</mat-label>
+    <mat-select [formControl]="friendsFormControl" multiple>
+        <mat-option *ngFor="let friend of FriendsList" [value]="friend">{{friend}}</mat-option>
+    </mat-select>
+</mat-form-field>
+
+<button class="marginLeft" mat-stroked-button (click)="onNewPoll()">Create Poll</button>
