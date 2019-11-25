@@ -25,6 +25,10 @@ export class PollService {
   }
 
   getAllRelatedPolls(username){
-    return this.http.get(`${this.url}/polls/${username}`);
+    return this.http.get(`${this.url}/polls/byUsername/${username}`);
+  }
+
+  getPollByID(pollID){
+    return this.http.get(`${this.url}/polls/byID/${pollID}`);
   }
 }

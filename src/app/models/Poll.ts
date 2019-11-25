@@ -1,8 +1,9 @@
 export class Poll{
     title: String;
     pollItems: Array<{
+        _id: String,
         text: String,
-        votes: Number
+        votes: number
     }>;
     creator: String;
     invitedUsers: Array<String>;

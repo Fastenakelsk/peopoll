@@ -7,7 +7,7 @@
         <mat-list>
             <mat-radio-group [(ngModel)]="chosenAnswer">
                 <mat-list-item *ngFor="let item of poll.pollItems">
-                    <mat-radio-button [value]="item">
+                    <mat-radio-button (click)="onClickRadio(poll)" [value]="item">
                         {{ item.text }}
                     </mat-radio-button>
                 </mat-list-item>
@@ -15,7 +15,7 @@
         </mat-list>
         <mat-list>
             <mat-list-item>
-                <button mat-stroked-button (click)="onVote(poll._id)">Vote</button>
+                <button mat-stroked-button (click)="onVote()">Vote</button>
             </mat-list-item>
         </mat-list>
     </mat-card>
