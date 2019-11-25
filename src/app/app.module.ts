@@ -33,6 +33,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from'@angular/material/radio';
 
 //Other
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -68,7 +69,8 @@ import { LoginGuard } from './guards/login.guard';
     MatToolbarModule,
     MatListModule,
     MatCardModule,
-    MatSelectModule
+    MatSelectModule,
+    MatRadioModule
   ],
   providers: [
     //Services

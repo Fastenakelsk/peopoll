@@ -1,3 +1,51 @@
-<div *ngIf="user">
-    <h2>{{user.username}}</h2>
+<!-- Invited Polls -->
+<h3 *ngIf="invitedPollArray.length != 0" >You've been invited to vote in these polls</h3>
+<h3 *ngIf="invitedPollArray.length == 0" >No current polls waiting for your vote</h3>
+<div class="container" *ngFor="let poll of invitedPollArray">
+    <mat-card>
+        <mat-card-title>{{ poll.title }}</mat-card-title>
+        <mat-list>
+            <mat-radio-group [(ngModel)]="chosenAnswer">
+                <mat-list-item *ngFor="let item of poll.pollItems">
+                    <mat-radio-button [value]="item">
+                        {{ item.text }}
+                    </mat-radio-button>
+                </mat-list-item>
+            </mat-radio-group>
+        </mat-list>
+        <mat-list>
+            <mat-list-item>
+                <button mat-stroked-button (click)="onVote(poll._id)">Vote</button>
+            </mat-list-item>
+        </mat-list>
+    </mat-card>
+</div>
+
+<!-- Created Polls -->
+<h3 *ngIf="creatorPollArray.length != 0" >These are the polls you've created</h3>
+<h3 *ngIf="creatorPollArray.length == 0" >No created polls found, create one by clicking 'New Poll'</h3>
+<div class="container" *ngFor="let poll of creatorPollArray">
+    <mat-card>
+        <mat-card-title>{{ poll.title }}</mat-card-title>
+        <mat-list>
+            <mat-list-item *ngFor="let item of poll.pollItems">
+                    {{ item.text }} |
+                    {{ item.votes }} votes
+            </mat-list-item>
+        </mat-list>
+    </mat-card>
+</div>
+<!-- Voted In Polls -->
+<h3 *ngIf="votedPollArray.length != 0" >These are the polls you've voted in</h3>
+<h3 *ngIf="votedPollArray.length == 0" >You have yet to vote in a poll</h3>
+<div class="container" *ngFor="let poll of votedPollArray">
+    <mat-card>
+        <mat-card-title>{{ poll.title }}</mat-card-title>
+        <mat-list>
+            <mat-list-item *ngFor="let item of poll.pollItems">
+                    {{ item.text }} |
+                    {{ item.votes }} votes
+            </mat-list-item>
+        </mat-list>
+    </mat-card>
 </div>

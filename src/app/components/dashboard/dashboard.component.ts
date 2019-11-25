@@ -15,6 +15,7 @@ export class DashboardComponent implements OnInit {
   votedPollArray: Array<Poll> = [];
   invitedPollArray: Array<Poll> = [];
   dataRegister:any={}
+  chosenAnswer: String;
 
   constructor(private loginService: LoginService, private pollService: PollService, private router: Router) { }
 
@@ -42,7 +43,14 @@ export class DashboardComponent implements OnInit {
      console.log(this.invitedPollArray);
      console.log(this.votedPollArray);
     });
+  }
 
+  onVote(pollId){
+    console.log(this.chosenAnswer);
+    console.log(pollId);
+    //Add 1 vote to the voteon on pollitem
+    //move user from invitedusers to votedusers in database
+    //reload page
   }
 
 }
