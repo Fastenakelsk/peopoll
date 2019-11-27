@@ -31,4 +31,8 @@ export class PollService {
   getPollByID(pollID){
     return this.http.get(`${this.url}/polls/byID/${pollID}`);
   }
+
+  patchPoll(poll){
+      return this.http.patch(`${this.url}/polls/${poll._id}`, poll);
+  }
 }

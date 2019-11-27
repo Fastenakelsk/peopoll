@@ -2,12 +2,12 @@
 <div class="container">
     <mat-card>
         <mat-card-title>Friend Requests</mat-card-title>
-        <mat-list *ngIf="requests === undefined">
+        <mat-list *ngIf="receivedRequests === undefined">
             <mat-list-item>
                     <h4>No friend requests</h4>
             </mat-list-item>
         </mat-list>
-        <mat-list *ngFor="let request of requests">
+        <mat-list *ngFor="let request of receivedRequests">
             <mat-list-item>
                 {{ request.sender }}
                 <div class="rightAlign"></div>

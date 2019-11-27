@@ -17,28 +17,15 @@ export class FriendsListService {
   }
 
   sendFriendRequest(request){
-    /*if(!this.doesRequestAlreadyExist(request)){
-      console.log('Request already exists');
-      return false;
-    }else{
-      if(!this.doesFriendshipAlreadyExist(request)){
-        console.log('Friendship already exists');
-        return false;
-      }else{*/
-        return this.http.post(`${this.url}/requests/`, request).subscribe(res =>{
-          this.dataRegister = res;
-          if(this.dataRegister.success){
-            console.log('Request sent');
-          }else{
-            console.log('Request not sent');
-          }
-        });
-      //}
-    //}
+    return this.http.post(`${this.url}/requests/`, request);
   }
 
-  getFriendRequests(username){
-    return this.http.get(`${this.url}/requests/${username}`);
+  getReceivedRequests(username){
+    return this.http.get(`${this.url}/requests/received/${username}`);
+  }  
+  
+  getSentRequests(username){
+    return this.http.get(`${this.url}/requests/sent/${username}`);
   }
 
   deleteFriendRequest(request){
@@ -65,34 +52,6 @@ export class FriendsListService {
   }
 
   getFriendsByUsername(username){
-    return this.http.get(`${this.url}/friends/${username}`);
+    return this.http.get(`${this.url}/friends/allFriendships/${username}`);
   }
-
-  /*doesRequestAlreadyExist(request){
-    this.http.get(`${this.url}/requests/${request.sender}/${request.receiver}`).subscribe(res => {
-      this.dataRegister = res;
-    });
-    console.log(this.dataRegister.success);
-    if(this.dataRegister.success){
-      console.log('Request doesn\'t exist');
-      return true;
-    }else{
-      console.log('Request exists');
-      return false;
-    }
-  }
-
-  doesFriendshipAlreadyExist(request){
-    this.http.get(`${this.url}/friends/${request.sender}/${request.receiver}`).subscribe(res => {
-      this.dataRegister = res;
-    });
-    console.log(this.dataRegister.success);
-    if(this.dataRegister.success){
-      console.log('Friendship doesn\'t exist');
-      return true;
-    }else{
-      console.log('Friendship exists');
-      return false;
-    }
-  }*/
 }

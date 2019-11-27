@@ -84,16 +84,13 @@ export class RegisterComponent implements OnInit {
             '';
   }
 
-  onNext(){
+  register(){
     this.newUser = {
       username: this.usernameFormControl.value,
       email: this.emailFormControl.value,
       password: this.passwordFormControl.value
     }
-    console.log(this.newUser);
-  }
 
-  register(){
     console.log(this.registerService.validateRegister(this.newUser));
     this.registerService.registerUser(this.newUser).subscribe(data => {
       this.dataRegister = data;

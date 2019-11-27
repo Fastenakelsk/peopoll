@@ -23,6 +23,12 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.username = JSON.parse(localStorage.getItem('user')).username;
+    this.creatorPollArray = [];
+    this.votedPollArray = [];
+    this.invitedPollArray = [];
+    this.dataRegister = undefined;
+    this.votedPoll = undefined;
+    this.chosenAnswer = undefined;
 
     this.pollService.getAllRelatedPolls(this.username).subscribe(res => {
       for(let poll in res){
@@ -64,8 +70,10 @@ export class DashboardComponent implements OnInit {
       }
     }
     console.log(this.votedPoll);
-    //patch poll
-    //reload page
+    this.pollService.patchPoll(this.votedPoll).subscribe(() => {
+      this.ngOnInit();
+    });
+    
   }
 
 }

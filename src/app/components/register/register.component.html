@@ -13,7 +13,7 @@
                 <mat-error *ngIf="emailFormControl.invalid">{{getEmailErrorMessage()}}</mat-error>
             </mat-form-field>
             <div>
-                <button mat-stroked-button matStepperNext (click)="onNext()" >Next</button>
+                <button mat-stroked-button matStepperNext>Next</button>
             </div>
         </form>
     </mat-step>
@@ -27,7 +27,7 @@
             </mat-form-field>
             <div>
                 <button mat-stroked-button matStepperPrevious>Back</button>
-                <button mat-stroked-button matStepperNext (click)="onNext()">Next</button>
+                <button mat-stroked-button matStepperNext>Next</button>
             </div>
         </form>
     </mat-step>
@@ -40,21 +40,6 @@
                     <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>
                 <mat-error *ngIf="passwordFormControl.invalid">{{getPasswordErrorMessage()}}</mat-error>
-            </mat-form-field>
-            <div>
-                <button mat-stroked-button matStepperPrevious>Back</button>
-                <button mat-stroked-button matStepperNext (click)="onNext()" >Next</button>
-            </div>
-        </form>
-    </mat-step>
-    <mat-step [stepControl]="fourthFormGroup">
-        <form [formGroup]="fourthFormGroup">
-            <ng-template matStepLabel>Make sure it's correct</ng-template>
-            <mat-form-field>
-                <input matInput placeholder="Password" formControlName="fourthCtrl" [type]="!hide ? 'password' : 'text'" required>
-                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                </button>
             </mat-form-field>
             <div>
                 <button mat-stroked-button matStepperPrevious>Back</button>

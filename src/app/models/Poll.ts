@@ -1,10 +1,8 @@
+import { PollItem } from './PollItem'
+
 export class Poll{
     title: String;
-    pollItems: Array<{
-        _id: String,
-        text: String,
-        votes: number
-    }>;
+    pollItems: Array<PollItem>;
     creator: String;
     invitedUsers: Array<String>;
     votedUsers: Array<String>;
