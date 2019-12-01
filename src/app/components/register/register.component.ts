@@ -11,12 +11,12 @@ import { User } from '../../models/User';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  users: User[];
   newUser: User;
   email: String;
   username: String;
   password: String;
   dataRegister:any={}
+  existingUserData: Array<String> = [];
 
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
@@ -30,24 +30,6 @@ export class RegisterComponent implements OnInit {
     ) {}
 
   ngOnInit() {
-
-    this.registerService.getUsers().subscribe(users => {
-      let userObject;
-      let usersArray = [];
-      for(let user in users){
-          userObject = [
-          {
-            username: users[user].username,
-            password: users[user].password,
-            email: users[user].email
-          }
-        ]
-        usersArray.push(userObject);
-      }
-      this.users = usersArray;
-      console.log(this.users);
-    });
-
     this.firstFormGroup = this._formBuilder.group({
       firstCtrl: ['', Validators.required]
     });
@@ -61,6 +43,12 @@ export class RegisterComponent implements OnInit {
       fourthCtrl: ['', Validators.required]
     });
 
+    this.registerService.getUsers().subscribe(res => {
+      for(let user in res){
+        this.existingUserData.push(res[user].username);
+        this.existingUserData.push(res[user].email);
+      }
+    });
   }
 
   emailFormControl = new FormControl('', [Validators.required, Validators.email]);
@@ -70,7 +58,7 @@ export class RegisterComponent implements OnInit {
   getEmailErrorMessage() {
     return this.emailFormControl.hasError('required') ? 'You must enter a value' :
       this.emailFormControl.hasError('email') ? 'Not a valid email' :
-            '';
+        '';
   }
   
   getUsernameErrorMessage() {
@@ -91,16 +79,19 @@ export class RegisterComponent implements OnInit {
       password: this.passwordFormControl.value
     }
 
-    console.log(this.registerService.validateRegister(this.newUser));
-    this.registerService.registerUser(this.newUser).subscribe(data => {
-      this.dataRegister = data;
-      if(this.dataRegister.success){
-        console.log(this.dataRegister);
-        this.router.navigate(['/login']);
-      }else{
-        console.log(this.dataRegister);
-      }
-    });
+    if(this.existingUserData.includes(this.newUser.username) || this.existingUserData.includes(this.newUser.email)){
+      console.log('Name or email already exists');
+    }else{
+      this.registerService.registerUser(this.newUser).subscribe(data => {
+        this.dataRegister = data;
+        if(this.dataRegister.success){
+          console.log(this.dataRegister);
+          this.router.navigate(['/login']);
+        }else{
+          console.log(this.dataRegister);
+        }
+      });
+    }
   }
 
 }

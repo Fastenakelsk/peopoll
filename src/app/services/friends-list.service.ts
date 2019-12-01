@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FriendsListService {
   dataRegister:any={};
+  getRequests = new BehaviorSubject(false);
 
 
   constructor(private http:HttpClient) { }
@@ -29,26 +31,11 @@ export class FriendsListService {
   }
 
   deleteFriendRequest(request){
-    return this.http.delete(`${this.url}/requests/${request._id}`).subscribe(res =>{
-      this.dataRegister = res;
-      if(this.dataRegister.success){
-        console.log('Request deleted');
-      }else{
-        console.log('Request not deleted');
-      }
-    })
+    return this.http.delete(`${this.url}/requests/${request._id}`);
   }
 
   makeFriend(request){
-    return this.http.post(`${this.url}/friends/`, request).subscribe(res => {
-      this.dataRegister = res;
-      if(this.dataRegister.success){
-        console.log('Friend added');
-        this.deleteFriendRequest(request);
-      }else{
-        console.log('Friend not added');
-      }
-    });
+    return this.http.post(`${this.url}/friends/`, request);
   }
 
   getFriendsByUsername(username){

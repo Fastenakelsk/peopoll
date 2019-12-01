@@ -19,17 +19,37 @@ export class DashboardComponent implements OnInit {
   votedPoll: Poll;
   chosenAnswer: PollItem;
 
-  constructor(private loginService: LoginService, private pollService: PollService, private router: Router) { }
+  constructor(private loginService: LoginService, private pollService: PollService, private router: Router) {
+    this.pollService.getNewPolls.subscribe(res => {
+      if(res == true){
+        this.getPolls();
+      }   
+    });
+   }
 
   ngOnInit() {
     this.username = JSON.parse(localStorage.getItem('user')).username;
+
+    this.getPolls();
+
+  }
+
+  onClickRadio(poll){
+    console.log(poll)
+    this.pollService.getPollByID(poll._id).subscribe(res => {
+      this.dataRegister = res;
+      this.votedPoll = this.dataRegister;
+    });
+  }
+
+  getPolls(){
     this.creatorPollArray = [];
     this.votedPollArray = [];
     this.invitedPollArray = [];
     this.dataRegister = undefined;
     this.votedPoll = undefined;
     this.chosenAnswer = undefined;
-
+    
     this.pollService.getAllRelatedPolls(this.username).subscribe(res => {
       for(let poll in res){
         if(res[poll].creator == this.username){
@@ -49,14 +69,6 @@ export class DashboardComponent implements OnInit {
      console.log(this.creatorPollArray);
      console.log(this.invitedPollArray);
      console.log(this.votedPollArray);
-    });
-  }
-
-  onClickRadio(poll){
-    console.log(poll)
-    this.pollService.getPollByID(poll._id).subscribe(res => {
-      this.dataRegister = res;
-      this.votedPoll = this.dataRegister;
     });
   }
 

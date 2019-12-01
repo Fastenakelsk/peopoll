@@ -1,27 +1,20 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PollService {
   dataRegister: any={};
+  getNewPolls = new BehaviorSubject(false);
 
   constructor(private http:HttpClient) { }
 
   url = 'http://localhost:3000';
 
   makePoll(poll){
-    return this.http.post(`${this.url}/polls/`, poll).subscribe(res => {
-      this.dataRegister = res;
-      console.log(poll);
-      console.log(this.dataRegister);
-      if(this.dataRegister.success){
-        console.log('Poll added');
-      }else{
-        console.log('Poll not added');
-      }
-    });
+    return this.http.post(`${this.url}/polls/`, poll);
   }
 
   getAllRelatedPolls(username){

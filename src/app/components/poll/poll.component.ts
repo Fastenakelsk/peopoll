@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 
 import { Poll } from 'src/app/models/Poll';
+import { PollItem } from 'src/app/models/PollItem';
 
 @Component({
   selector: 'app-poll',
@@ -15,8 +16,8 @@ export class PollComponent implements OnInit {
   dataRegister: any={};
   poll: Poll;
   pollItemName: String;
-  pollItem: any={text: String, votes: Number};
-  pollItemsArray: Array<{text: String, votes: Number}> = [];
+  pollItem: any={PollItem};
+  pollItemsArray: Array<PollItem> = [];
   invitedUsersArray: [];
   pollName: String;
   title: String;
@@ -46,8 +47,15 @@ export class PollComponent implements OnInit {
       invitedUsers: this.invitedUsersArray,
       votedUsers: []
     }
-    this.pollService.makePoll(this.poll);
-    this.router.navigate(["/dashboard"]);
+    if(this.pollItemsArray.length >= 2 && this.invitedUsersArray.length >= 1){
+      this.pollService.makePoll(this.poll).subscribe(res => {
+        this.pollService.getNewPolls.next(res ? true : false);
+      });
+      this.router.navigate(["/dashboard"]);
+    }else{
+      console.log('Incorrect New Poll Attempt');
+    }
+
   }
 
   onAddPollItem(){

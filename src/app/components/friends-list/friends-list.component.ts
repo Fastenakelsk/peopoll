@@ -24,10 +24,21 @@ export class FriendsListComponent implements OnInit {
   request: Request;
   allowRequest: Boolean;
 
-  constructor(private friendslistService: FriendsListService, private router: Router) { }
+  constructor(private friendslistService: FriendsListService, private router: Router) {
+    this.friendslistService.getRequests.subscribe(res => {
+      if(res == true){
+        this.getRequests();
+      }
+    })
+   }
 
   ngOnInit() {
     this.allowRequest = true;
+
+    this.getRequests();
+  }
+
+  getRequests(){
     this.friendslistService.getReceivedRequests(JSON.parse(localStorage.getItem('user')).username).subscribe(receivedRequests =>{
       this.receivedRequestRegister = receivedRequests;
       if(this.receivedRequestRegister[0] == undefined){
@@ -46,7 +57,7 @@ export class FriendsListComponent implements OnInit {
         this.sentRequests = this.sentRequestRegister;
       }
       console.log(this.sentRequests);
-    })
+    });
 
     this.friendslistService.getFriendsByUsername(JSON.parse(localStorage.getItem('user')).username).subscribe(friends => {
       this.friendsRegister = friends;
@@ -56,13 +67,12 @@ export class FriendsListComponent implements OnInit {
         this.friends = this.friendsRegister;
       }
       console.log(this.friends);
-    })
+    });
   }
 
   onRequest(){
     this.friendslistService.getUserByUsername(this.username).subscribe(user => {
       this.onRequestRegister = user;
-      
       if(this.onRequestRegister != undefined){
         this.request = {
           sender: JSON.parse(localStorage.getItem('user')).username,
@@ -70,42 +80,27 @@ export class FriendsListComponent implements OnInit {
         }
         if(this.sentRequests == undefined && this.friends == undefined){
           if(this.request.sender != this.request.receiver){
-            this.friendslistService.sendFriendRequest(this.request).subscribe( () => {
+            this.friendslistService.sendFriendRequest(this.request).subscribe(res => {
+              this.friendslistService.getRequests.next(res ? true : false);
             });
           }else{
             console.log("Can't request to be your own friend");
           }
         }else{
-          if(this.friends != undefined){
-            for(let item in this.friends){
-              console.log(this.friends);
-              console.log(this.request.sender);
-              console.log(JSON.parse(localStorage.getItem('user')).username);
-              console.log(this.request.receiver);
-              console.log(this.friends[item]);
-              if(this.request.sender == JSON.parse(localStorage.getItem('user')).username && this.request.receiver == this.friends[item] || this.request.receiver == JSON.parse(localStorage.getItem('user')).username && this.request.sender == this.friends[item]){
-                console.log('here');
-                this.allowRequest = false;
-                console.log('Friendship already exists');
-              }
-            }
+          
+          this.checkForExistingFriendship();
+          this.checkForExistingRequest();
+
+          if(!this.allowRequest){
+            console.log('Request already exists or Friendship already exists');
           }else{
-            for(let item in this.sentRequests){
-              if(this.sentRequests[item].sender == this.request.sender && this.sentRequests[item].receiver == this.request.receiver){
-                this.allowRequest = false;
-                console.log('Request already exists');
-              }
-            }
-            if(!this.allowRequest){
-              console.log('Request already exists or Friendship already exists');
+            if(this.request.sender != this.request.receiver){
+              console.log('Request sent');
+              this.friendslistService.sendFriendRequest(this.request).subscribe(res => {
+                this.friendslistService.getRequests.next(res ? true : false);
+              });
             }else{
-              if(this.request.sender != this.request.receiver){
-                console.log('Request sent');
-                this.friendslistService.sendFriendRequest(this.request).subscribe( () => {
-                });
-              }else{
-                console.log("Can't request to be your own friend");
-              }
+              console.log("Can't request to be your own friend");
             }
           }
         }
@@ -115,15 +110,40 @@ export class FriendsListComponent implements OnInit {
     });
   }
 
+  checkForExistingFriendship(){
+    if(this.friends != undefined){
+      for(let item in this.friends){
+        if(this.request.sender == JSON.parse(localStorage.getItem('user')).username && this.request.receiver == this.friends[item] || this.request.receiver == JSON.parse(localStorage.getItem('user')).username && this.request.sender == this.friends[item]){
+          this.allowRequest = false;
+          console.log('Friendship already exists');
+        }
+      }
+    }
+  }
+
+  checkForExistingRequest(){
+    if(this.sentRequests != undefined){
+      for(let item in this.sentRequests){
+        if(this.sentRequests[item].sender == this.request.sender && this.sentRequests[item].receiver == this.request.receiver){
+          this.allowRequest = false;
+          console.log('Request already exists');
+        }
+      }
+    }
+  }
+
   onAccept(request){
-    this.friendslistService.makeFriend(request);
-    this.ngOnInit();
-    this.ngOnInit();
+    this.friendslistService.deleteFriendRequest(request).subscribe(res => {
+      console.log(res);
+    });
+    this.friendslistService.makeFriend(request).subscribe(res => {
+      this.friendslistService.getRequests.next(res ? true : false);
+    });
   }
 
   onDecline(request){
-    this.friendslistService.deleteFriendRequest(request);
-    this.ngOnInit();
-    this.ngOnInit();
+    this.friendslistService.deleteFriendRequest(request).subscribe(res => {
+      this.friendslistService.getRequests.next(res ? true : false);
+    });
   }
 }

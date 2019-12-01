@@ -30,22 +30,4 @@ export class RegisterService {
     console.log(user);
     return this.http.post(`${this.url}/users/`, user);
   }
-
-  /*getTaskByID(id){
-    return this.http.get(`${this.url}/tasks/${id}`);
-  }
-
-
-
-  patchTask(id, title, isDone){
-    const task = {
-      title: title,
-      isDone: isDone
-    };
-    return this.http.patch(`${this.url}/tasks/${id}`, task);
-  }
-
-  deleteTask(id){
-    return this.http.delete(`${this.url}/tasks/${id}`);
-  }*/
 }

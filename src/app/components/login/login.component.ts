@@ -14,7 +14,8 @@ export class LoginComponent implements OnInit {
   username: String;
   password: String;
   existingUser: User;
-  dataRegister:any={}
+  dataRegister:any={};
+  existingUsernames: Array<String> = [];
 
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
@@ -56,12 +57,12 @@ export class LoginComponent implements OnInit {
       password: this.passwordFormControl.value
     }
     console.log(this.existingUser);
-
     this.loginService.authenticateUser(this.existingUser).subscribe(data => {
       this.dataRegister = data;
       if(this.dataRegister.success){
         console.log(this.dataRegister);
         this.loginService.storeUserData(this.dataRegister.token, this.dataRegister.user);
+        this.loginService.isLoggedIn.next(this.dataRegister.token ? true : false)
         this.router.navigate(['/friendslist']);
       }else{
         console.log(this.dataRegister.message);

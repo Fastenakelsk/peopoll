@@ -16,11 +16,18 @@ export class NavbarComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private loginService:LoginService,
     private router:Router
-    ) { }
+  ) {
+    this.loginService.isLoggedIn.subscribe(res => {
+      if(res == true){
+        this.username = JSON.parse(localStorage.getItem('user')).username;
+      }   
+    });
+  }
 
   ngOnInit() {
     this.username = JSON.parse(localStorage.getItem('user')).username;
   }
+  
 
   onLogoutClick(){
     this.loginService.logout();

@@ -13,7 +13,6 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoginComponent } from './components/login/login.component';
 import { FriendsListComponent } from './components/friends-list/friends-list.component';
 import { PollComponent } from './components/poll/poll.component';
-import { TaskComponent } from './components/task/task.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 //Services
@@ -49,7 +48,6 @@ import { LoginGuard } from './guards/login.guard';
     LoginComponent,
     FriendsListComponent,
     PollComponent,
-    TaskComponent,
     DashboardComponent,
   ],
   imports: [
